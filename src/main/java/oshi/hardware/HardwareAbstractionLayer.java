@@ -19,7 +19,13 @@ public interface HardwareAbstractionLayer {
 	 *  An array of Processor objects.
 	 */
 	Processor[] getProcessors();
-	
+
+	/**
+	 * Get GPUs.
+	 * @return An array of GPU objects.
+	 */
+	Gpu[] getGpus();
+
 	/**
 	 * Get Memory information.
 	 * @return

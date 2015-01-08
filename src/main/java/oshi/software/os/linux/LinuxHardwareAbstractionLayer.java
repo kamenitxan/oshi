@@ -6,11 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import oshi.hardware.Gpu;
 import oshi.hardware.HardwareAbstractionLayer;
 import oshi.hardware.Memory;
 import oshi.hardware.Processor;
 import oshi.software.os.linux.proc.CentralProcessor;
 import oshi.software.os.linux.proc.GlobalMemory;
+import oshi.software.os.linux.proc.GraphicCard;
+import oshi.util.ExecutingCommand;
 
 /**
  * @author alessandro[at]perucchi[dot]org
@@ -21,6 +24,7 @@ public class LinuxHardwareAbstractionLayer implements HardwareAbstractionLayer {
 	private static final String SEPARATOR = "\\s+:\\s";
 	private Processor[] _processors = null;
 	private Memory _memory = null;
+	private Gpu[] _gpu = null;
 
 	public Memory getMemory() {
 		if (_memory == null) {
@@ -100,6 +104,21 @@ public class LinuxHardwareAbstractionLayer implements HardwareAbstractionLayer {
 		}
 
 		return _processors;
+	}
+
+	public Gpu[] getGpus() {
+		if (_gpu == null) {
+			List<Gpu> gpus = new ArrayList<Gpu>();
+			ArrayList<String> sys_profile = ExecutingCommand.runNative("lspci -vnn");
+			System.out.printf(sys_profile.toString());
+			for (String line : sys_profile) {
+				if (line.contains("VGA compatible controller:")) {
+					gpus.add(new GraphicCard(line));
+				}
+			}
+			_gpu = gpus.toArray(new Gpu[gpus.size()]);
+		}
+		return _gpu;
 	}
 
 }

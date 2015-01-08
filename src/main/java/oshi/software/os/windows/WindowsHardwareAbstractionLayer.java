@@ -3,6 +3,7 @@ package oshi.software.os.windows;
 import java.util.ArrayList;
 import java.util.List;
 
+import oshi.hardware.Gpu;
 import oshi.hardware.HardwareAbstractionLayer;
 import oshi.hardware.Memory;
 import oshi.hardware.Processor;
@@ -46,6 +47,10 @@ public class WindowsHardwareAbstractionLayer implements HardwareAbstractionLayer
 		}
 		
 		return _processors;
+	}
+
+	public Gpu[] getGpus() {
+		throw new UnsupportedOperationException();
 	}
 
 }

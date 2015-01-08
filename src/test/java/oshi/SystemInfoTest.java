@@ -6,6 +6,8 @@ package oshi;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+
+import oshi.hardware.Gpu;
 import oshi.hardware.HardwareAbstractionLayer;
 import oshi.hardware.Memory;
 import oshi.hardware.Processor;
@@ -53,6 +55,22 @@ public class SystemInfoTest {
         assertTrue(hal.getProcessors()[0].getLoad() >= 0 && hal.getProcessors()[0].getLoad() <= 100);
     }
 
+    @Test
+    public void testGpus() {
+        SystemInfo si = new SystemInfo();
+        Gpu[] gpus = si.getHardware().getGpus();
+        assertTrue(gpus.length > 0);
+    }
+
+    @Test
+    public void testGpuMemory() {
+        SystemInfo si = new SystemInfo();
+        Gpu[] gpus = si.getHardware().getGpus();
+        for (Gpu gpu : gpus) {
+            assertTrue(gpu.getTotalMemory() > 0);
+        }
+    }
+
     public static void main(String[] args) {
         SystemInfo si = new SystemInfo();
         // software
@@ -71,6 +89,9 @@ public class SystemInfoTest {
                 + FormatUtil.formatBytes(hal.getMemory().getAvailable()) + "/"
                 + FormatUtil.formatBytes(hal.getMemory().getTotal()));
         System.out.println("CPU load: " + hal.getProcessors()[0].getLoad() + "%");
+        System.out.println("GPU: "
+                + hal.getGpus()[0].getName() + " "
+                + FormatUtil.formatBytes(hal.getGpus()[0].getTotalMemory()));
     }
 
 }

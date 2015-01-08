@@ -48,6 +48,7 @@ Current supported feature
 * How much available RAM
 * How many CPUs (core * thread)
 * CPU load % (OSX and Linux)
+* GPU vendor, name and memory (OSX and Linux)
 
 Sample Output
 -------------
@@ -63,6 +64,7 @@ Microsoft Windows 7
  Intel(R) Core(TM)2 Duo CPU T7300  @ 2.00GHz
 Memory: 532.1 MB/2.0 GB
 CPU load: 70.59%
+GPU: NVIDIA GeForce GTX 650 Ti 1 GB
 ```
 
 For Linux:
@@ -80,6 +82,7 @@ GNU/Linux Fedora 20 (Heisenbug)
  Intel(R) Core(TM) i7-3720QM CPU @ 2.60GHz
 Memory: 21.0 GB/31.0 GB
 CPU load: 70.59%
+GPU: NVIDIA GeForce GTX 650 Ti 1 GB
 ```
 
 For Mac OS X:
@@ -93,6 +96,7 @@ Apple Mac OS X 10.9.5 (Mavericks) build 13F34
  Intel(R) Core(TM) i7-2677M CPU @ 1.80GHz
 Memory: 17.3 MB/4 GB
 CPU load: 70.59%
+GPU: NVIDIA GeForce GTX 650 Ti 1 GB
 ```
 
 How is this different from ...
