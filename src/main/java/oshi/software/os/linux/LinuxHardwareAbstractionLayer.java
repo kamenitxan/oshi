@@ -109,11 +109,17 @@ public class LinuxHardwareAbstractionLayer implements HardwareAbstractionLayer {
 	public Gpu[] getGpus() {
 		if (_gpu == null) {
 			List<Gpu> gpus = new ArrayList<Gpu>();
-			ArrayList<String> sys_profile = ExecutingCommand.runNative("lspci -vnn");
-			System.out.printf(sys_profile.toString());
-			for (String line : sys_profile) {
-				if (line.contains("VGA compatible controller:")) {
-					gpus.add(new GraphicCard(line));
+			ArrayList<String> sys_profile = ExecutingCommand.runNative("lshw -class display");
+			for (int i = 0; i < sys_profile.size(); i++) {
+				if (sys_profile.get(i).contains("*-display")) {
+					String model = sys_profile.get(i+2).replace("product: ", "").trim();
+					try {
+						model = model.substring(model.indexOf("["), model.lastIndexOf("]"));
+					} catch (StringIndexOutOfBoundsException ex) {
+						model = sys_profile.get(i+2).replace("product: ", "").trim();
+					}
+					String vendor = sys_profile.get(i+3).replace("vendor: ", "").trim();
+					gpus.add(new GraphicCard(model, vendor, 42));
 				}
 			}
 			_gpu = gpus.toArray(new Gpu[gpus.size()]);

@@ -14,16 +14,10 @@ public class GraphicCard implements Gpu{
 	private String _name;
 	private long _totalMemory;
 
-	public GraphicCard(String model) {
-		ArrayList<String> sys_profile = ExecutingCommand.runNative("lspci -vnn");
-		for (int i = 0; i < sys_profile.size(); i++) {
-			if (sys_profile.get(i).contains(model)) {
-				_name = model.replace("Chipset Model: ", "").trim();
-				_vendor = sys_profile.get(i+2).replace("Vendor: ", "").replaceAll("\\([^)]+\\)", "").trim();
-				_totalMemory = Long.valueOf(sys_profile.get(i+2)) * 1048576;
-				break;
-			}
-		}
+	public GraphicCard(String model, String vendor, long totalMemory) {
+		_name = model;
+		_vendor = vendor.replace(" Technologies Inc", "").replace(" Technologies Inc", "");
+		_totalMemory = totalMemory;
 	}
 
 
