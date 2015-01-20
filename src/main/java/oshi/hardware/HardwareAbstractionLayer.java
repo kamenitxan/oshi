@@ -7,6 +7,9 @@
  */
 package oshi.hardware;
 
+import oshi.hardware.storage.Storage;
+import oshi.util.NoSuchDeviceException;
+
 /**
  * A hardware abstraction layer.
  * @author dblock[at]dblock[dot]org
@@ -26,5 +29,12 @@ public interface HardwareAbstractionLayer {
 	 *  A memory object.
 	 */
 	Memory getMemory();
+
+	/**
+	 * Get storage devices.
+	 * @return array of storage devices.
+	 * @throws NoSuchDeviceException if no storage device is present.
+	 */
+	Storage[] getStorage() throws NoSuchDeviceException;
 
 }
