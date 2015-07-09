@@ -1,9 +1,18 @@
-/*
- * Copyright (c) Daniel Widdis, 2015
+/**
+ * Oshi (https://github.com/dblock/oshi)
+ * 
+ * Copyright (c) 2010 - 2015 The Oshi Project Team
+ * 
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ * dblock[at]dblock[dot]org
+ * alessandro[at]perucchi[dot]org
  * widdis[at]gmail[dot]com
- * All Rights Reserved
- * Eclipse Public License (EPLv1)
- * http://oshi.codeplex.com/license
+ * https://github.com/dblock/oshi/graphs/contributors
  */
 package oshi.software.os.mac.local;
 
@@ -25,8 +34,11 @@ import com.sun.jna.ptr.IntByReference;
  * @author widdis[at]gmail[dot]com
  */
 public class MacPowerSource implements PowerSource {
+
 	private String name;
+
 	private double remainingCapacity;
+
 	private double timeRemaining;
 
 	public MacPowerSource(String name, double remainingCapacity,
@@ -38,17 +50,17 @@ public class MacPowerSource implements PowerSource {
 
 	@Override
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	@Override
 	public double getRemainingCapacity() {
-		return remainingCapacity;
+		return this.remainingCapacity;
 	}
 
 	@Override
 	public double getTimeRemaining() {
-		return timeRemaining;
+		return this.timeRemaining;
 	}
 
 	/**
@@ -67,7 +79,7 @@ public class MacPowerSource implements PowerSource {
 		double timeRemaining = IOKit.INSTANCE.IOPSGetTimeRemainingEstimate();
 
 		// For each power source, output various info
-		List<MacPowerSource> psList = new ArrayList<MacPowerSource>(
+		List<MacPowerSource> psList = new ArrayList<>(
 				powerSourcesCount);
 		for (int ps = 0; ps < powerSourcesCount; ps++) {
 			// Get the dictionary for that Power Source

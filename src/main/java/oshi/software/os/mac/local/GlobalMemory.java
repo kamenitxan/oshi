@@ -1,9 +1,18 @@
-/*
- * Copyright (c) Daniel Widdis, 2015
+/**
+ * Oshi (https://github.com/dblock/oshi)
+ * 
+ * Copyright (c) 2010 - 2015 The Oshi Project Team
+ * 
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ * dblock[at]dblock[dot]org
+ * alessandro[at]perucchi[dot]org
  * widdis[at]gmail[dot]com
- * All Rights Reserved
- * Eclipse Public License (EPLv1)
- * http://oshi.codeplex.com/license
+ * https://github.com/dblock/oshi/graphs/contributors
  */
 package oshi.software.os.mac.local;
 
@@ -25,6 +34,7 @@ public class GlobalMemory implements Memory {
 
 	long totalMemory = 0;
 
+	@Override
 	public long getAvailable() {
 		long availableMemory = 0;
 		long pageSize = 4096;
@@ -47,16 +57,17 @@ public class GlobalMemory implements Memory {
 		return availableMemory;
 	}
 
+	@Override
 	public long getTotal() {
-		if (totalMemory == 0) {
+		if (this.totalMemory == 0) {
 			int[] mib = { SystemB.CTL_HW, SystemB.HW_MEMSIZE };
 			Pointer pMemSize = new com.sun.jna.Memory(SystemB.UINT64_SIZE);
 			if (0 != SystemB.INSTANCE.sysctl(mib, mib.length, pMemSize,
 					new IntByReference(SystemB.UINT64_SIZE), null, 0))
 				throw new LastErrorException("Error code: "
 						+ Native.getLastError());
-			totalMemory = pMemSize.getLong(0);
+			this.totalMemory = pMemSize.getLong(0);
 		}
-		return totalMemory;
+		return this.totalMemory;
 	}
 }

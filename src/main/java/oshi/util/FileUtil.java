@@ -1,16 +1,25 @@
 /**
- * Copyright (c) Daniel Widdis, 2015
+ * Oshi (https://github.com/dblock/oshi)
+ * 
+ * Copyright (c) 2010 - 2015 The Oshi Project Team
+ * 
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ * dblock[at]dblock[dot]org
+ * alessandro[at]perucchi[dot]org
  * widdis[at]gmail[dot]com
- * All Rights Reserved
- * Eclipse Public License (EPLv1)
- * http://oshi.codeplex.com/license
+ * https://github.com/dblock/oshi/graphs/contributors
  */
 package oshi.util;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.Arrays;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -21,10 +30,8 @@ import java.util.List;
  * @author widdis[at]gmail[dot]com
  */
 public class FileUtil {
+
 	public static List<String> readFile(String filename) throws IOException {
-		File f = new File(filename);
-		byte[] bytes = Files.readAllBytes(f.toPath());
-		String s = new String(bytes, "UTF-8");
-		return Arrays.asList(s.split(System.getProperty("line.separator")));
+		return Files.readAllLines(Paths.get(filename), StandardCharsets.UTF_8);
 	}
 }

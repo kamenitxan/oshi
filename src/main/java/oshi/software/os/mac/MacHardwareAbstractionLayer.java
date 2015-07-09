@@ -1,11 +1,18 @@
-/*
- * Copyright (c) Alessandro Perucchi, 2014
+/**
+ * Oshi (https://github.com/dblock/oshi)
+ * 
+ * Copyright (c) 2010 - 2015 The Oshi Project Team
+ * 
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ * dblock[at]dblock[dot]org
  * alessandro[at]perucchi[dot]org
- * Daniel Widdis, 2015
  * widdis[at]gmail[dot]com
- * All Rights Reserved
- * Eclipse Public License (EPLv1)
- * http://oshi.codeplex.com/license
+ * https://github.com/dblock/oshi/graphs/contributors
  */
 package oshi.software.os.mac;
 
@@ -16,8 +23,10 @@ import oshi.hardware.HardwareAbstractionLayer;
 import oshi.hardware.Memory;
 import oshi.hardware.PowerSource;
 import oshi.hardware.Processor;
+import oshi.software.os.OSFileStore;
 import oshi.software.os.mac.local.CentralProcessor;
 import oshi.software.os.mac.local.GlobalMemory;
+import oshi.software.os.mac.local.MacFileSystem;
 import oshi.software.os.mac.local.MacPowerSource;
 import oshi.software.os.mac.local.SystemB;
 
@@ -32,7 +41,9 @@ import com.sun.jna.ptr.IntByReference;
 public class MacHardwareAbstractionLayer implements HardwareAbstractionLayer {
 
 	private Processor[] _processors;
+
 	private Memory _memory;
+
 	private PowerSource[] _powerSources;
 
 	/*
@@ -40,10 +51,11 @@ public class MacHardwareAbstractionLayer implements HardwareAbstractionLayer {
 	 * 
 	 * @see oshi.hardware.HardwareAbstractionLayer#getProcessors()
 	 */
+	@Override
 	public Processor[] getProcessors() {
-		if (_processors == null) {
+		if (this._processors == null) {
 			int nbCPU = 1;
-			List<Processor> processors = new ArrayList<Processor>();
+			List<Processor> processors = new ArrayList<>();
 			int[] mib = { SystemB.CTL_HW, SystemB.HW_LOGICALCPU };
 			com.sun.jna.Memory pNbCPU = new com.sun.jna.Memory(SystemB.INT_SIZE);
 			if (0 != SystemB.INSTANCE.sysctl(mib, mib.length, pNbCPU,
@@ -52,11 +64,11 @@ public class MacHardwareAbstractionLayer implements HardwareAbstractionLayer {
 						+ Native.getLastError());
 			nbCPU = pNbCPU.getInt(0);
 			for (int i = 0; i < nbCPU; i++)
-				processors.add(new CentralProcessor());
+				processors.add(new CentralProcessor(i));
 
-			_processors = processors.toArray(new Processor[0]);
+			this._processors = processors.toArray(new Processor[0]);
 		}
-		return _processors;
+		return this._processors;
 	}
 
 	/*
@@ -64,19 +76,25 @@ public class MacHardwareAbstractionLayer implements HardwareAbstractionLayer {
 	 * 
 	 * @see oshi.hardware.HardwareAbstractionLayer#getMemory()
 	 */
+	@Override
 	public Memory getMemory() {
-		if (_memory == null) {
-			_memory = new GlobalMemory();
+		if (this._memory == null) {
+			this._memory = new GlobalMemory();
 		}
-		return _memory;
+		return this._memory;
 	}
 
 	@Override
 	public PowerSource[] getPowerSources() {
-		if (_powerSources == null) {
-			_powerSources = MacPowerSource.getPowerSources();
+		if (this._powerSources == null) {
+			this._powerSources = MacPowerSource.getPowerSources();
 		}
-		return _powerSources;
+		return this._powerSources;
+	}
+
+	@Override
+	public OSFileStore[] getFileStores() {
+		return MacFileSystem.getFileStores();
 	}
 
 }

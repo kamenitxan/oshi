@@ -1,9 +1,18 @@
 /**
- * Copyright (c) Daniel Doubrovkine, 2010
+ * Oshi (https://github.com/dblock/oshi)
+ * 
+ * Copyright (c) 2010 - 2015 The Oshi Project Team
+ * 
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
  * dblock[at]dblock[dot]org
- * All Rights Reserved
- * Eclipse Public License (EPLv1)
- * http://oshi.codeplex.com/license
+ * alessandro[at]perucchi[dot]org
+ * widdis[at]gmail[dot]com
+ * https://github.com/dblock/oshi/graphs/contributors
  */
 package oshi.software.os.windows.nt;
 
@@ -30,8 +39,8 @@ public class OSVersionInfoEx implements OperatingSystemVersion {
 	private OSVERSIONINFOEX _versionInfo;
 
 	public OSVersionInfoEx() {
-		_versionInfo = new OSVERSIONINFOEX();
-		if (!Kernel32.INSTANCE.GetVersionEx(_versionInfo)) {
+		this._versionInfo = new OSVERSIONINFOEX();
+		if (!Kernel32.INSTANCE.GetVersionEx(this._versionInfo)) {
 			throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
 		}
 	}
@@ -47,7 +56,7 @@ public class OSVersionInfoEx implements OperatingSystemVersion {
 	 *         Windows XP: 5.1 Windows 2000: 5.0
 	 */
 	public int getMajor() {
-		return _versionInfo.dwMajorVersion.intValue();
+		return this._versionInfo.dwMajorVersion.intValue();
 	}
 
 	/**
@@ -61,7 +70,7 @@ public class OSVersionInfoEx implements OperatingSystemVersion {
 	 *         Windows XP: 5.1 Windows 2000: 5.0
 	 */
 	public int getMinor() {
-		return _versionInfo.dwMinorVersion.intValue();
+		return this._versionInfo.dwMinorVersion.intValue();
 	}
 
 	/**
@@ -70,7 +79,7 @@ public class OSVersionInfoEx implements OperatingSystemVersion {
 	 * @return Build number.
 	 */
 	public int getBuildNumber() {
-		return _versionInfo.dwBuildNumber.intValue();
+		return this._versionInfo.dwBuildNumber.intValue();
 	}
 
 	/**
@@ -79,7 +88,7 @@ public class OSVersionInfoEx implements OperatingSystemVersion {
 	 * @return Platform ID.
 	 */
 	public int getPlatformId() {
-		return _versionInfo.dwPlatformId.intValue();
+		return this._versionInfo.dwPlatformId.intValue();
 	}
 
 	/**
@@ -90,7 +99,7 @@ public class OSVersionInfoEx implements OperatingSystemVersion {
 	 * @return Service pack.
 	 */
 	public String getServicePack() {
-		return Native.toString(_versionInfo.szCSDVersion);
+		return Native.toString(this._versionInfo.szCSDVersion);
 	}
 
 	/**
@@ -99,7 +108,7 @@ public class OSVersionInfoEx implements OperatingSystemVersion {
 	 * @return Suite mask.
 	 */
 	public int getSuiteMask() {
-		return _versionInfo.wSuiteMask.intValue();
+		return this._versionInfo.wSuiteMask.intValue();
 	}
 
 	/**
@@ -108,7 +117,7 @@ public class OSVersionInfoEx implements OperatingSystemVersion {
 	 * @return Product type.
 	 */
 	public byte getProductType() {
-		return _versionInfo.wProductType;
+		return this._versionInfo.wProductType;
 	}
 
 	@Override
@@ -199,43 +208,43 @@ public class OSVersionInfoEx implements OperatingSystemVersion {
 
 			} else {
 				throw new RuntimeException("Unsupported Windows NT version: "
-						+ _versionInfo.toString());
+						+ this._versionInfo.toString());
 			}
 
-			if (_versionInfo.wServicePackMajor.intValue() > 0) {
+			if (this._versionInfo.wServicePackMajor.intValue() > 0) {
 				version = version + " SP"
-						+ _versionInfo.wServicePackMajor.intValue();
+						+ this._versionInfo.wServicePackMajor.intValue();
 			}
 
 		} else if (getPlatformId() == WinNT.VER_PLATFORM_WIN32_WINDOWS) {
 			if (getMajor() == 4 && getMinor() == 90) {
 				version = "ME";
 			} else if (getMajor() == 4 && getMinor() == 10) {
-				if (_versionInfo.szCSDVersion[1] == 'A') {
+				if (this._versionInfo.szCSDVersion[1] == 'A') {
 					version = "98 SE";
 				} else {
 					version = "98";
 				}
 			} else if (getMajor() == 4 && getMinor() == 0) {
-				if (_versionInfo.szCSDVersion[1] == 'C'
-						|| _versionInfo.szCSDVersion[1] == 'B') {
+				if (this._versionInfo.szCSDVersion[1] == 'C'
+						|| this._versionInfo.szCSDVersion[1] == 'B') {
 					version = "95 OSR2";
 				} else {
 					version = "95";
 				}
 			} else {
 				throw new RuntimeException("Unsupported Windows 9x version: "
-						+ _versionInfo.toString());
+						+ this._versionInfo.toString());
 			}
 		} else {
 			throw new RuntimeException("Unsupported Windows platform: "
-					+ _versionInfo.toString());
+					+ this._versionInfo.toString());
 		}
 
 		return version;
 	}
 
 	public OSVersionInfoEx(OSVERSIONINFOEX versionInfo) {
-		_versionInfo = versionInfo;
+		this._versionInfo = versionInfo;
 	}
 }

@@ -1,11 +1,18 @@
-/*
- * Copyright (c) Alessandro Perucchi, 2014
+/**
+ * Oshi (https://github.com/dblock/oshi)
+ * 
+ * Copyright (c) 2010 - 2015 The Oshi Project Team
+ * 
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ * dblock[at]dblock[dot]org
  * alessandro[at]perucchi[dot]org
- * Daniel Widdis, 2015
  * widdis[at]gmail[dot]com
- * All Rights Reserved
- * Eclipse Public License (EPLv1)
- * http://oshi.codeplex.com/license
+ * https://github.com/dblock/oshi/graphs/contributors
  */
 package oshi.software.os.mac;
 
@@ -23,23 +30,27 @@ public class MacOperatingSystem implements OperatingSystem {
 
 	private OperatingSystemVersion _version = null;
 
+	@Override
 	public OperatingSystemVersion getVersion() {
-		if (_version == null) {
-			_version = new OSVersionInfoEx();
+		if (this._version == null) {
+			this._version = new OSVersionInfoEx();
 		}
-		return _version;
+		return this._version;
 	}
 
+	@Override
 	public String getFamily() {
-		if (_family == null)
-			_family = System.getProperty("os.name");
-		return _family;
+		if (this._family == null)
+			this._family = System.getProperty("os.name");
+		return this._family;
 	}
 
+	@Override
 	public String getManufacturer() {
 		return "Apple";
 	}
 
+	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(getManufacturer());

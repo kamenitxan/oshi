@@ -1,9 +1,18 @@
 /**
- * Copyright (c) Alessandro Perucchi, 2014
+ * Oshi (https://github.com/dblock/oshi)
+ * 
+ * Copyright (c) 2010 - 2015 The Oshi Project Team
+ * 
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ * dblock[at]dblock[dot]org
  * alessandro[at]perucchi[dot]org
- * All Rights Reserved
- * Eclipse Public License (EPLv1)
- * http://oshi.codeplex.com/license
+ * widdis[at]gmail[dot]com
+ * https://github.com/dblock/oshi/graphs/contributors
  */
 package oshi.software.os.linux;
 
@@ -26,38 +35,38 @@ public class LinuxOperatingSystem implements OperatingSystem {
 	private OperatingSystemVersion _version = null;
 	private String _family = null;
 
+	@Override
 	public String getFamily() {
-		if (_family == null) {
-			Scanner in;
-			try {
-				in = new Scanner(new FileReader("/etc/os-release"));
+		if (this._family == null) {
+			try (final Scanner in = new Scanner(new FileReader("/etc/os-release"))) {
+				in.useDelimiter("\n");
+				while (in.hasNext()) {
+					String[] splittedLine = in.next().split("=");
+					if (splittedLine[0].equals("NAME")) {
+						// remove beginning and ending '"' characters, etc from
+						// NAME="Ubuntu"
+						this._family = splittedLine[1].replaceAll("^\"|\"$", "");
+						break;
+					}
+				}
 			} catch (FileNotFoundException e) {
 				return "";
 			}
-			in.useDelimiter("\n");
-			while (in.hasNext()) {
-				String[] splittedLine = in.next().split("=");
-				if (splittedLine[0].equals("NAME")) {
-					// remove beginning and ending '"' characters, etc from
-					// NAME="Ubuntu"
-					_family = splittedLine[1].replaceAll("^\"|\"$", "");
-					break;
-				}
-			}
-			in.close();
 		}
-		return _family;
+		return this._family;
 	}
 
+	@Override
 	public String getManufacturer() {
 		return "GNU/Linux";
 	}
 
+	@Override
 	public OperatingSystemVersion getVersion() {
-		if (_version == null) {
-			_version = new OSVersionInfoEx();
+		if (this._version == null) {
+			this._version = new OSVersionInfoEx();
 		}
-		return _version;
+		return this._version;
 	}
 
 	@Override

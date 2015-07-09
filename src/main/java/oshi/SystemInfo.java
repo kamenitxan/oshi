@@ -1,9 +1,18 @@
 /**
- * Copyright (c) Daniel Doubrovkine, 2010
+ * Oshi (https://github.com/dblock/oshi)
+ * 
+ * Copyright (c) 2010 - 2015 The Oshi Project Team
+ * 
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
  * dblock[at]dblock[dot]org
- * All Rights Reserved
- * Eclipse Public License (EPLv1)
- * http://oshi.codeplex.com/license
+ * alessandro[at]perucchi[dot]org
+ * widdis[at]gmail[dot]com
+ * https://github.com/dblock/oshi/graphs/contributors
  */
 package oshi;
 
@@ -19,7 +28,10 @@ import oshi.software.os.windows.WindowsOperatingSystem;
 import com.sun.jna.Platform;
 
 /**
- * Current system information.
+ * System information. This is the main entry point to Oshi. This object
+ * provides getters which instantiate the appropriate platform-specific
+ * implementations of {@link OperatingSystem} (software) and
+ * {@link HardwareAbstractionLayer} (hardware).
  * 
  * @author dblock[at]dblock[dot]org
  */
@@ -30,64 +42,66 @@ public class SystemInfo {
 
 	{
 		if (Platform.isWindows())
-			currentPlatformEnum = PlatformEnum.WINDOWS;
+			this.currentPlatformEnum = PlatformEnum.WINDOWS;
 		else if (Platform.isLinux())
-			currentPlatformEnum = PlatformEnum.LINUX;
+			this.currentPlatformEnum = PlatformEnum.LINUX;
 		else if (Platform.isMac())
-			currentPlatformEnum = PlatformEnum.MACOSX;
+			this.currentPlatformEnum = PlatformEnum.MACOSX;
 		else
-			currentPlatformEnum = PlatformEnum.UNKNOWN;
+			this.currentPlatformEnum = PlatformEnum.UNKNOWN;
 	}
 
 	/**
-	 * Retrieves operating system information.
+	 * Creates a new instance of the appropriate platform-specific
+	 * {@link OperatingSystem}.
 	 * 
-	 * @return Operating system information.
+	 * @return A new instance of {@link OperatingSystem}.
 	 */
 	public OperatingSystem getOperatingSystem() {
-		if (_os == null) {
-			switch (currentPlatformEnum) {
+		if (this._os == null) {
+			switch (this.currentPlatformEnum) {
 
 			case WINDOWS:
-				_os = new WindowsOperatingSystem();
+				this._os = new WindowsOperatingSystem();
 				break;
 			case LINUX:
-				_os = new LinuxOperatingSystem();
+				this._os = new LinuxOperatingSystem();
 				break;
 			case MACOSX:
-				_os = new MacOperatingSystem();
+				this._os = new MacOperatingSystem();
 				break;
 			default:
 				throw new RuntimeException("Operating system not supported: "
 						+ Platform.getOSType());
 			}
 		}
-		return _os;
+		return this._os;
 	}
 
 	/**
-	 * Retrieves hardware information.
+	 * Creates a new instance of the appropriate platform-specific
+	 * {@link HardwareAbstractionLayer}.
 	 * 
-	 * @return Hardware abstraction layer.
+	 * @return A new instance of {@link HardwareAbstractionLayer}.
 	 */
 	public HardwareAbstractionLayer getHardware() {
-		if (_hardware == null) {
-			switch (currentPlatformEnum) {
+		if (this._hardware == null) {
+			switch (this.currentPlatformEnum) {
 
 			case WINDOWS:
-				_hardware = new WindowsHardwareAbstractionLayer();
+				this._hardware = new WindowsHardwareAbstractionLayer();
 				break;
 			case LINUX:
-				_hardware = new LinuxHardwareAbstractionLayer();
+				this._hardware = new LinuxHardwareAbstractionLayer();
 				break;
 			case MACOSX:
-				_hardware = new MacHardwareAbstractionLayer();
+				this._hardware = new MacHardwareAbstractionLayer();
 				break;
 			default:
 				throw new RuntimeException("Operating system not supported: "
 						+ Platform.getOSType());
 			}
 		}
-		return _hardware;
+		return this._hardware;
 	}
 }

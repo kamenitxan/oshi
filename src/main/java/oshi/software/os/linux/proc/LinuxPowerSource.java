@@ -1,9 +1,18 @@
-/*
- * Copyright (c) Daniel Widdis, 2015
+/**
+ * Oshi (https://github.com/dblock/oshi)
+ * 
+ * Copyright (c) 2010 - 2015 The Oshi Project Team
+ * 
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ * dblock[at]dblock[dot]org
+ * alessandro[at]perucchi[dot]org
  * widdis[at]gmail[dot]com
- * All Rights Reserved
- * Eclipse Public License (EPLv1)
- * http://oshi.codeplex.com/license
+ * https://github.com/dblock/oshi/graphs/contributors
  */
 package oshi.software.os.linux.proc;
 
@@ -21,10 +30,13 @@ import oshi.util.FileUtil;
  * @author widdis[at]gmail[dot]com
  */
 public class LinuxPowerSource implements PowerSource {
+
 	private static final String PS_PATH = "/sys/class/power_supply/";
 
 	private String name;
+
 	private double remainingCapacity;
+
 	private double timeRemaining;
 
 	public LinuxPowerSource(String name, double remainingCapacity,
@@ -36,17 +48,17 @@ public class LinuxPowerSource implements PowerSource {
 
 	@Override
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	@Override
 	public double getRemainingCapacity() {
-		return remainingCapacity;
+		return this.remainingCapacity;
 	}
 
 	@Override
 	public double getTimeRemaining() {
-		return timeRemaining;
+		return this.timeRemaining;
 	}
 
 	/**
@@ -59,7 +71,7 @@ public class LinuxPowerSource implements PowerSource {
 		// Empty directory will give null rather than empty array, so fix
 		if (psNames == null)
 			psNames = new String[0];
-		List<LinuxPowerSource> psList = new ArrayList<LinuxPowerSource>(
+		List<LinuxPowerSource> psList = new ArrayList<>(
 				psNames.length);
 		// For each power source, output various info
 		for (String psName : psNames) {
@@ -120,7 +132,7 @@ public class LinuxPowerSource implements PowerSource {
 				}
 			}
 			psList.add(new LinuxPowerSource(name, (double) energyNow
-					/ energyFull, isCharging ? -2d : 3600d * (double) energyNow
+					/ energyFull, isCharging ? -2d : 3600d * energyNow
 					/ powerNow));
 		}
 
